@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D m_rigidBody;
@@ -9,13 +10,14 @@ public class PlayerController : MonoBehaviour
     public float horizontalSpeed;
     public float maxSpeed;
     public float horizontalBounds;
-    
+    public BulletManager bulletManager;   
 
 
     // Start is called before the first frame update
     void Start()
     {
         m_rigidBody = GetComponent<Rigidbody2D>();
+        bulletManager = FindObjectOfType<BulletManager>();
     }
 
     // Update is called once per frame
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     {
         _Move();
         _CheckBounds();
+        _FireBullet();
     }
 
     private void _Move()
@@ -68,6 +71,13 @@ public class PlayerController : MonoBehaviour
             finalTouch *= 0;
         
     }
+    private void _FireBullet()
+    {
+        if (Time.frameCount % 40 == 0)
+        {
+            bulletManager.getBullet(transform.position);
+        }
+    }
 
     private void _CheckBounds()
     {
@@ -81,4 +91,6 @@ public class PlayerController : MonoBehaviour
             transform.position = new Vector3(horizontalBounds, transform.position.y, 0.0f);
         }
     }
+
+
 }
